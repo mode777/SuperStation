@@ -1,0 +1,8 @@
+build/
+build-wasm/
+/*.dll
+/*.data
+/*.exe
+/*.js
+/*.wasm
+/.vscode
