@@ -105,10 +105,8 @@ static void json_load_1(WrenVM* vm){
 
   const char* filename = wrenGetSlotString(vm, 1);
 
-  const char* path = sst_string_join(state->root, filename);
   const char* content;
-  sst_ErrorCode err = sst_io_readfile(path, &content, NULL);
-  free((void*)path);
+  sst_ErrorCode err = sst_wren_load_resource(vm, path, &content, NULL);
 
   if(err != sst_NoError){
     wrenError(vm, sst_error_get());
