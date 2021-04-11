@@ -11,7 +11,7 @@ pd.set(2,2,0xFF0000FF)
 
 VRAM.upload(pd)
 
-Sprite.set(0,0,0,3,3,1,1)
+Sprite.set(0,0,0,3,3,1,1,0)
 
 Sprite.transform(0,100,100, 0, 32, 32)
 

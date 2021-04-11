@@ -7,6 +7,24 @@
 #include "quad.h"
 #include "gl.h"
 
+sst_ErrorCode sst_layers_reset(sst_Layers* layers){
+  
+  sst_LayerAttribs defaultAttribs = {0};
+  // Init vertex attributes
+  for (size_t i = 0; i < SST_MAX_LAYERS; i++)
+  {
+
+    *(&layers->attributes[i]) = defaultAttribs;
+
+    sst_Quad* q = &layers->quads[i];
+    sst_quad_reset(q);
+    sst_quad_set_shape(q, 0, 0, 2, 2, 1, 1);
+    sst_quad_set_source(q, 0, 0, 1,1);
+    sst_quad_set_layer(q, i+1);
+  }
+  SST_RETURN();
+}
+
 sst_ErrorCode sst_layers_init(sst_Layers* layers){
   // Create shaders
   size_t str_size;
@@ -58,15 +76,6 @@ sst_ErrorCode sst_layers_init(sst_Layers* layers){
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, layers->indexBuffer);
   glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), (const GLvoid*)&indices, GL_STATIC_DRAW);
 
-  // Init vertex attributes
-  for (size_t i = 0; i < SST_MAX_LAYERS; i++)
-  {
-    sst_Quad* q = &layers->quads[i];
-    sst_quad_reset(q);
-    sst_quad_set_shape(q, 0, 0, 2, 2, 1, 1);
-    sst_quad_set_source(q, 0, 0, 1,1);
-    sst_quad_set_layer(q, i+1);
-  }
   SST_RETURN();
 }
 

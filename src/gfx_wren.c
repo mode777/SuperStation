@@ -115,9 +115,8 @@ static void pixeldata_fromImage_1(WrenVM* vm){
   size_t png_size, w, h;
 
   const char* imgRoot = state->root;
-  const char* path = sst_string_join(imgRoot, img);
-  sst_ErrorCode error = sst_io_readfile(path, &png, &png_size);
-  free((void*)path);
+  sst_ErrorCode error = sst_wren_load_resource(vm, img, (unsigned char**)&png, &png_size);
+  
   if(error != sst_NoError){
     wrenError(vm, sst_error_get());
     sst_error_clear();

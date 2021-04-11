@@ -20,5 +20,6 @@ typedef struct {
 sst_ErrorCode sst_sprites_init(sst_Sprites* sprites);
 sst_ErrorCode sst_sprites_update(sst_Sprites* sprites);
 sst_ErrorCode sst_sprites_draw(sst_Sprites* sprites);
+sst_ErrorCode sst_sprites_reset(sst_Sprites* sprites);
 
 #endif

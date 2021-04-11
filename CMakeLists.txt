@@ -56,13 +56,16 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
   target_compile_definitions(wren PRIVATE DEBUG)
 endif()
 
+# Add zip
+add_subdirectory(thirdparty/zip)
+
 # The main program
 file(GLOB_RECURSE sources src/*.c)
 file(GLOB_RECURSE headers src/*.h)
 
 add_executable(superstation ${headers} ${sources})
 target_include_directories(superstation PRIVATE include)
-target_link_libraries(superstation PRIVATE EGL::EGL OpenGLES2::OpenGLES2 SDL2::Main stb_image wren jsmn)
+target_link_libraries(superstation PRIVATE EGL::EGL OpenGLES2::OpenGLES2 SDL2::Main stb_image wren jsmn zip)
 
 # Add emscripten configuration
 if(EMSCRIPTEN)

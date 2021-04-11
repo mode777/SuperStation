@@ -11,7 +11,7 @@ SuperStation is a 16-bit fantasy console. Think of it as a Super Nintendo on ste
 
 ## Getting started
 
-Create a new folder called 
+Create a new folder called `myproject`
 
 `myproject/main.wren`
 ```wren
@@ -21,6 +21,7 @@ import "gfx" for Sprite, VRAM, PixelData
 var pd = PixelData.fromImage("image.png")
 VRAM.upload(pd, 0, 0)
 
+// Set Sprite 1 to VRAM location 0,0 size: 16x16
 Sprite.set(1,0,0,16,16)
 
 var rotate = 0
@@ -30,11 +31,12 @@ while(true){
   // Move sprite to coordinates 100, 100 and rotate by r
   Sprite.transform(1, 100, 100, r)
   r = r + 0.01
-  // Return control for the image to render
+  // Return control for the console to render
   Fiber.yield()
 }
 ```
 
+Start SuperStation and drag the folder on the window.
 
 ## Building
 

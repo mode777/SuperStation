@@ -1,3 +1,6 @@
+#include <stdarg.h>
+#include <limits.h>
+
 #include <SDL.h>
 
 #include "string.h"
@@ -33,6 +36,24 @@ sst_ErrorCode sst_io_readfile(const char* path, const char** out_str, size_t* ou
     return sst_Error;
   }
   SST_RETURN(*out_str = data; if(out_size!=NULL){*out_size = size;});
+}
+
+static char path_buffer[4096];
+
+const char* sst_io_joinPath(int fragments, ...) {
+  va_list argp;
+  va_start(argp, fragments);
+  for (size_t i = 0; i < fragments; i++)
+  {
+    const char* frag = va_arg(argp, const char*);
+    strcat(path_buffer, frag);
+  }
+  va_end(argp);
+  
+  const char* str = calloc(strlen(path_buffer)+1, sizeof(unsigned char));
+  strcpy((char*)str, path_buffer);
+  path_buffer[0] = '\0';
+  return str;
 }
 
 // #else

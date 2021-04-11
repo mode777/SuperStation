@@ -8,6 +8,15 @@
 #include "io.h"
 #include "gl.h"
 
+sst_ErrorCode sst_sprites_reset(sst_Sprites* sprites){
+// Init vertex attributes
+  for (size_t i = 0; i < SST_MAX_SPRITES; i++)
+  {
+    sst_quad_reset(&sprites->quads[i]);
+  }
+  SST_RETURN();
+}
+
 sst_ErrorCode sst_sprites_init(sst_Sprites* sprites){
   // Create shaders
   size_t str_size;
@@ -55,11 +64,6 @@ sst_ErrorCode sst_sprites_init(sst_Sprites* sprites){
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, sprites->indexBuffer);
   glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), (const GLvoid*)&indices, GL_STATIC_DRAW);
 
-  // Init vertex attributes
-  for (size_t i = 0; i < SST_MAX_SPRITES; i++)
-  {
-    sst_quad_reset(&sprites->quads[i]);
-  }
   SST_RETURN();
 }
 

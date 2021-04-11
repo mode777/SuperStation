@@ -21,7 +21,7 @@ for(i in 0...1000){
       var vy = 0
       var lifetime = 800 + r.int(280)
 
-      Sprite.set(i,r.int(256),r.int(256),8,8, 4, 4)
+      Sprite.set(i,r.int(256),r.int(256),8,8, 4, 4, 0)
       
       while(lifetime > 0){
         Sprite.transform(i, x, y)

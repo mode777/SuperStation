@@ -1,3 +1,6 @@
 [submodule "thirdparty/wren"]
 	path = thirdparty/wren
 	url = https://github.com/wren-lang/wren.git
+[submodule "thirdparty/zip"]
+	path = thirdparty/zip
+	url = https://github.com/kuba--/zip.git

@@ -31,5 +31,6 @@ typedef struct {
 sst_ErrorCode sst_layers_init(sst_Layers* sprites);
 sst_ErrorCode sst_layers_update(sst_Layers* sprites);
 sst_ErrorCode sst_layers_draw(sst_Layers* sprites);
+sst_ErrorCode sst_layers_reset(sst_Layers* layers);
 
 #endif

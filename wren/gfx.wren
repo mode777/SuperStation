@@ -9,6 +9,7 @@ class Sprite {
   foreign static offset(i, x, y, r, sx, sy)
 
   static set(i, x, y, w, h) { Sprite.set(i, x, y, w, h, 0, 0, 0) }
+  static set(i, x, y, w, h, ox, oy) { Sprite.set(i, x, y, w, h, ox, oy, 0) }
   foreign static set(i, x, y, w, h, ox, oy, layer)
 }
 
