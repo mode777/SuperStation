@@ -1,6 +1,6 @@
 import "gfx" for VRAM, PixelData, Sprite, Layer
 
-var pd = PixelData.fromImage("sheet.png")
+var pd = PixelData.load("sheet.png")
 VRAM.upload(pd, 0, 256)
 
 var VISIBLE =  0x00800000
@@ -16,7 +16,7 @@ var FENCE2 = VISIBLE | 0x030E
 var tiles = [BOX, LADDER, CHEST, SIGN, FLOWER, FLOWER2, FENCE, FENCE2]
 
 for(layer in 0...8){
-  pd = PixelData.create(3,3)
+  pd = PixelData.new(3,3)
   pd.set(0,0,tiles[layer])
   pd.set(1,0,tiles[layer])
   pd.set(2,0,tiles[layer])

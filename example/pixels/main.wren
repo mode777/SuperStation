@@ -1,6 +1,6 @@
 import "gfx" for PixelData, Sprite, VRAM
 
-var pd = PixelData.create(3,3)
+var pd = PixelData.new(3,3)
 
 //0xAABBGGRR
 pd.set(0,0,0xFFFF0000)

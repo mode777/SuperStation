@@ -231,8 +231,7 @@ sst_ErrorCode sst_wren_update(WrenVM* vm, bool* out_running){
   wrenSetSlotHandle(vm, 0, userData->updateHandle);
   wrenSetSlotHandle(vm, 1, userData->mainHandle);
   WrenInterpretResult fiberResult = wrenCall(vm, userData->callHandle);
-  if(fiberResult != WREN_RESULT_SUCCESS){
-    wrenFreeVM(vm);
+  if(fiberResult != WREN_RESULT_SUCCESS){    
     return sst_Error;
   }
   *out_running = wrenGetSlotBool(vm, 0);

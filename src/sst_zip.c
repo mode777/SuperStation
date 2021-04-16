@@ -20,6 +20,10 @@ EM_JS(void, do_fetch, (const char* path), {
 #endif
 
 bool sst_zip_isArchive(const char* zipPath){
+  #ifdef EMSCRIPTEN
+  do_fetch(zipPath);
+  #endif 
+
   struct zip_t *zip = zip_open(zipPath, 0, 'r');
   if(zip == NULL) return false;
   zip_close(zip);

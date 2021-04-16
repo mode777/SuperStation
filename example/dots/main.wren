@@ -1,7 +1,7 @@
 import "gfx" for Sprite, VRAM, PixelData
 import "random" for Random
 
-var pd = PixelData.fromImage("pal.png")
+var pd = PixelData.load("pal.png")
 
 VRAM.upload(pd)
 

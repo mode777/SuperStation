@@ -37,6 +37,7 @@ static void load_game(const char* str){
     } else {
       State.root = str;
     }
+    State.isZip = false;
   }
   // TODO: Reset VRAM
   SST_CALL_TERM(sst_sprites_reset(&State.gfx.sprites));
@@ -63,7 +64,7 @@ static void update(){
     SST_CALL_TERM(sst_gfx_draw(&State.gfx));
     bool running;
     if(State.vm != NULL){
-      SST_CALL_TERM(sst_wren_update(State.vm, &running));
+      sst_ErrorCode error = sst_wren_update(State.vm, &running);
     }
     //quit = quit ? quit : !running;
 

@@ -28,15 +28,22 @@ void main(void) {
     float sy = 1.0 / scale.y;
     float sprio = prioIntensity.x;
 
-    float m0 = sx * c;
-    float m1 = sx * s;
+    // float m0 = sx * c;
+    // float m1 = sx * s;
 
-    float m3 = sy * -s;
-    float m4 = sy * c;
+    // float m3 = sy * -s;
+    // float m4 = sy * c;
 
-    vec2 translation = -(trans / tilesize) + (screensize / 2.0);
+    vec2 t = trans - vec2(1.0,1.0);
 
-    mat3 transformation = mat3(m0, m1, 0.0, m3, m4, 0.0, translation.x, translation.y, 1.0);
+    //mat3 transformation = mat3(m0, m1, 0.0, m3, m4, 0.0, translation.x, translation.y, 1.0);
+    
+    mat3 translation = mat3(1.0, 0.0, 0.0, 0.0, 1.0, 0.0, -t.x, -t.y, 1.0);
+    mat3 scale = mat3(sx, 0.0, 0.0, 0.0, sy, 0.0, 0.0, 0.0, 1.0);
+    mat3 rotation = mat3(c,s,0,-s,c,0,0,0,1.0);
+    
+    mat3 transformation = rotation * scale * translation;
+
     texcoord = (transformation * vec3(uv, 1.0)).xy;
 
     float mult = step(prio, sprio) * step(sprio, prio);

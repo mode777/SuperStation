@@ -26,10 +26,16 @@ class VRAM {
   foreign static upload(path, x, y)
 }
 
+var VISIBLE =  0x00800000
+
 foreign class PixelData {
-  foreign static create(w,h)
-  foreign static fromImage(path)
+  foreign static new(w,h)
+  foreign static load(path)
+  foreign width
+  foreign height
+  vram(x,y) { VRAM.upload(this,x,y) }
   foreign set(x,y,color)
+  tile(x,y,tileX,tileY) { set(x,y,VISIBLE | (tileY << 8) | tileX) }
 }
 
 // class Color {

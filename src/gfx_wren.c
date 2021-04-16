@@ -151,6 +151,16 @@ static void pixeldata_set_3(WrenVM* vm){
   pixels[y*w+x] = pixel;
 }
 
+static void pixeldata_width(WrenVM* vm){
+  unsigned int* data = wrenGetSlotForeign(vm, 0);
+  wrenSetSlotDouble(vm, 0, data[0]);
+}
+
+static void pixeldata_height(WrenVM* vm){
+  unsigned int* data = wrenGetSlotForeign(vm, 0);
+  wrenSetSlotDouble(vm, 0, data[1]);
+}
+
 static void layer_transform_6(WrenVM* vm){
   int id = wrenGetSlotDouble(vm, 1);
   int x = wrenGetSlotDouble(vm, 2);
@@ -196,9 +206,11 @@ sst_ErrorCode sst_gfx_wren_register(WrenVM* vm){
   sst_wren_register_method(vm, "gfx.Sprite.set(_,_,_,_,_,_,_,_)", sprite_set_8);
   sst_wren_register_method(vm, "gfx.Sprite.unset(_)", sprite_unset_1);
   sst_wren_register_method(vm, "gfx.VRAM.upload(_,_,_)", vram_upload_3);
-  sst_wren_register_method(vm, "gfx.PixelData.create(_,_)", pixeldata_create_2);
-  sst_wren_register_method(vm, "gfx.PixelData.fromImage(_)", pixeldata_fromImage_1);
+  sst_wren_register_method(vm, "gfx.PixelData.new(_,_)", pixeldata_create_2);
+  sst_wren_register_method(vm, "gfx.PixelData.load(_)", pixeldata_fromImage_1);
   sst_wren_register_method(vm, "gfx.PixelData.set(_,_,_)", pixeldata_set_3);
+  sst_wren_register_method(vm, "gfx.PixelData.width", pixeldata_width);
+  sst_wren_register_method(vm, "gfx.PixelData.height", pixeldata_height);
   sst_wren_register_method(vm, "gfx.Layer.transform(_,_,_,_,_,_)", layer_transform_6);
   sst_wren_register_method(vm, "gfx.Layer.set(_,_,_,_,_,_,_,_,_)", layer_set_9);
   return sst_NoError;
