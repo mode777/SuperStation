@@ -23,11 +23,11 @@ maketile.call(0,0,0xFF0000FF,0xFF00FF00)
 maketile.call(2,0,0xFF00FFFF,0xFFFFFF00)
 makelayer.call(0,2,0,0)
 
-var x = 1
-var y = 1
+var x = 0
+var y = 0
 
 while(true){
-  Layer.transform(0, 150, 12, 0, 1, 1)
+  Layer.transform(0, x, y, 0, 10, 10)
   x = x+0.01
   y = y+0.01
   Fiber.yield()

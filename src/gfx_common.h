@@ -5,11 +5,11 @@
 
 #define SST_MAX_LAYERS 8
 
-#define SST_FB_WIDTH 384
-#define SST_FB_HEIGHT 216
+#define SST_FB_WIDTH 320
+#define SST_FB_HEIGHT 240
 
-#define SST_WIN_WIDTH 768
-#define SST_WIN_HEIGHT 432
+#define SST_WIN_WIDTH 1280
+#define SST_WIN_HEIGHT 920
 
 typedef struct {
   GLubyte r;
