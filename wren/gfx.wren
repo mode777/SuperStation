@@ -27,6 +27,8 @@ class VRAM {
 }
 
 var VISIBLE =  0x00800000
+var FLIPX =  0x00400000
+var FLIPY =  0x00200000
 
 foreign class PixelData {
   foreign static new(w,h)
@@ -35,6 +37,7 @@ foreign class PixelData {
   foreign height
   vram(x,y) { VRAM.upload(this,x,y) }
   foreign set(x,y,color)
+  tile(x,y,tileX,tileY, flipX, flipY) { set(x,y,VISIBLE | (tileY << 8) | tileX | (flipX ? FLIPX : 0) | (flipY ? FLIPY : 0)) }
   tile(x,y,tileX,tileY) { set(x,y,VISIBLE | (tileY << 8) | tileX) }
 }
 

@@ -21,21 +21,25 @@ void main(void) {
   //inp.y += cos(gl_FragCoord.y / 30.0 + time);
   //inp.x += sin(gl_FragCoord.y / 50.0 + time);
   
-  inp = clampMode == 0 
+  inp = /*clampMode == 0 
     // repeat bg
     ? mapOffset + mod(inp, mapSize) 
     // clamp bg
-    : mapOffset + clamp(floor(inp), vec2(0,0), (mapSize-vec2(1.0,1.0))) + fract(inp);
+    : */mapOffset + clamp(floor(inp), vec2(0,0), (mapSize-vec2(1.0,1.0))) + fract(inp);
 
   mediump vec4 tile = texture2D(texture, (floor(inp)+0.5) / texSize);
   tile *= 255.0;
   mediump int flags1 = int(tile.z);
   mediump int flags2 = int(tile.w);
   mediump float drawFlag = mod(float(flags1/128), 2.0);
+  mediump float flipXFlag = mod(float(flags1/64), 2.0);
+  mediump float flipYFlag = mod(float(flags1/32), 2.0);
    
   mediump vec2 oneTile = (texSize / tilesize);
 
-  mediump vec2 offset = ((floor(fract(inp) * tilesize + tileOffset) + 0.5) / tilesize);
+  mediump vec2 local = vec2(1.0-flipXFlag, 1.0-flipYFlag) * fract(inp) + vec2(flipXFlag, flipYFlag) * (1.0 - fract(inp)); 
+  
+  mediump vec2 offset = ((floor(local * tilesize + tileOffset) + 0.5) / tilesize);
   mediump vec2 uv = (tile.xy + offset) / oneTile;
 
   mediump vec4 color = texture2D(texture, uv);

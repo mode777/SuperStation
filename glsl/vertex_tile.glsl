@@ -9,6 +9,7 @@ uniform float prio;
 uniform vec2 size;
 uniform mediump vec2 texSize;
 uniform mediump vec2 tilesize;
+uniform mediump vec2 scroll;
 
 varying vec2 texcoord;
 varying vec4 vColor;
@@ -19,7 +20,7 @@ void main(void) {
     vIntensity = prioIntensity.y / 255.0;
 
     vec2 screensize = size / tilesize;
-    vec2 uv = (coordUv.zw * screensize) - (screensize / 2.0);// - (size / (tilesize * pixelscale * 2.0));
+    vec2 uv = (coordUv.zw * screensize);// - (size / (tilesize * pixelscale * 2.0));
 
     float r = -(rot / 5215.0);
     float s = sin(r);
@@ -38,11 +39,12 @@ void main(void) {
 
     //mat3 transformation = mat3(m0, m1, 0.0, m3, m4, 0.0, translation.x, translation.y, 1.0);
     
-    mat3 translation = mat3(1.0, 0.0, 0.0, 0.0, 1.0, 0.0, -t.x, -t.y, 1.0);
+    mat3 translation2 = mat3(1.0, 0.0, 0.0, 0.0, 1.0, 0.0, -t.x, -t.y, 1.0);
+    mat3 translation = mat3(1.0, 0.0, 0.0, 0.0, 1.0, 0.0, scroll.x, scroll.y, 1.0);
     mat3 scale = mat3(sx, 0.0, 0.0, 0.0, sy, 0.0, 0.0, 0.0, 1.0);
     mat3 rotation = mat3(c,s,0,-s,c,0,0,0,1.0);
     
-    mat3 transformation = rotation * scale * translation;
+    mat3 transformation = translation * rotation * scale * translation2;
 
     texcoord = (transformation * vec3(uv, 1.0)).xy;
 
