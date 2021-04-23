@@ -54,11 +54,11 @@ sst_ErrorCode sst_wren_load_resource(WrenVM* vm, const char* path, unsigned char
 
   if(state->isZip){
     printf("[DEBUG] Try load resource %s from %s\n", path, state->root);
-    SST_TRY_CALL(sst_zip_readfile(state->root, path, (const char**)out_data, out_size));
+    SST_TRY_CALL(sst_zip_readfile(state->root, path, out_data, out_size));
   } else {
     const char* localPath = sst_io_joinPath(2, state->root, path);
     printf("[DEBUG] Try load resource file %s\n", localPath);
-    sst_ErrorCode error = sst_io_readfile(localPath, (const char**)out_data, out_size);
+    sst_ErrorCode error = sst_io_readfile(localPath, out_data, out_size);
     free((void*)localPath);
     return error;
   }
@@ -178,7 +178,7 @@ static sst_ErrorCode load_internal_modules(WrenVM* vm){
   for (size_t i = 0; i < 3; i++)
   {
     if(InternalModules[i].source == NULL) {
-      SST_TRY_CALL(sst_io_readfile(InternalModules[i].filename, &InternalModules[i].source, NULL));
+      SST_TRY_CALL(sst_io_readfile(InternalModules[i].filename, (unsigned char**)&InternalModules[i].source, NULL));
     }
     
     WrenInterpretResult fiberResult = wrenInterpret(vm, InternalModules[i].name, InternalModules[i].source);

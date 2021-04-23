@@ -2,6 +2,11 @@ cmake_minimum_required(VERSION 3.6)
 project(SuperStation)
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
+include(cmake/TargetArch.cmake)
+target_architecture(TARGET_ARCH)
+
+message("Building for ${TARGET_ARCH}")
+
 
 #set(CMAKE_FIND_DEBUG_MODE true)
 
@@ -14,7 +19,12 @@ bin2h(SOURCE_FILE glsl/vertex.glsl HEADER_FILE include/vertex.in VARIABLE_NAME S
 
 # Add SDL
 if(WIN32)
-  set(CMAKE_PREFIX_PATH ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/sdl2/win32/x86)
+  if(TARGET_ARCH STREQUAL "x86_32")
+    set(CMAKE_PREFIX_PATH ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/sdl2/win32/x86)
+  endif()
+  if(TARGET_ARCH STREQUAL "x86_64")
+    set(CMAKE_PREFIX_PATH ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/sdl2/win32/x64)
+  endif()
   #set(SDL2_BUILDING_LIBRARY on)
 endif()
 
@@ -22,9 +32,20 @@ find_package(SDL2 REQUIRED)
 
 # Add GLES2
 if(WIN32)
-  set(CMAKE_PREFIX_PATH ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/angle/win32/x86)
-  set(EGL_LIBRARY ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/angle/win32/x86/bin/libEGL.dll.lib)
-  set(OPENGLES2_LIBRARY ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/angle/win32/x86/bin/libGLESv2.dll.lib)
+  
+endif()
+
+if(WIN32)
+  if(TARGET_ARCH STREQUAL "x86_32")
+    set(CMAKE_PREFIX_PATH ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/angle/win32/x86)
+    set(EGL_LIBRARY ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/angle/win32/x86/bin/libEGL.dll.lib)
+    set(OPENGLES2_LIBRARY ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/angle/win32/x86/bin/libGLESv2.dll.lib)
+  endif()
+  if(TARGET_ARCH STREQUAL "x86_64")
+    set(CMAKE_PREFIX_PATH ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/angle/win32/x64)
+    set(EGL_LIBRARY ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/angle/win32/x64/bin/libEGL.dll.lib)
+    set(OPENGLES2_LIBRARY ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/angle/win32/x64/bin/libGLESv2.dll.lib)
+  endif()
 endif()
 
 find_package(EGL REQUIRED)

@@ -29,12 +29,12 @@ sst_ErrorCode sst_layers_init(sst_Layers* layers){
   // Create shaders
   size_t str_size;
   sst_Program* p = &layers->program;
-  const char *vertex, *fragment;
+  unsigned char *vertex, *fragment;
   SST_TRY_CALL(sst_io_readfile("glsl/vertex_tile.glsl", &vertex, &str_size));
   SST_TRY_CALL(sst_io_readfile("glsl/fragment_tile.glsl", &fragment, &str_size));
-  SST_TRY_CALL(sst_gl_create_program(vertex, fragment, &p->program));
-  SDL_free((void*)vertex);
-  SDL_free((void*)fragment);
+  SST_TRY_CALL(sst_gl_create_program((const char*)vertex, (const char*)fragment, &p->program));
+  free((void*)vertex);
+  free((void*)fragment);
   
   p->attributes.coordUv = glGetAttribLocation(p->program, "coordUv");
   p->attributes.scale = glGetAttribLocation(p->program, "scale");

@@ -84,13 +84,12 @@ static void vram_upload_3(WrenVM* vm){
   int y = wrenGetSlotDouble(vm, 3);
 
   if((x + w) > SST_VRAM_WIDTH || (y + h) > SST_VRAM_HEIGHT){
-    free((void*)pixels);
     wrenError(vm, "Image too big for VRAM");
     return;
   }
 
   sst_ErrorCode error = sst_vram_upload_image(&state->gfx.vram, x, y, (unsigned char*)pixels, w, h);
-  free((void*)pixels);
+  
   if(error != sst_NoError){
     wrenError(vm, sst_error_get());
     sst_error_clear();
@@ -123,7 +122,7 @@ static void pixeldata_fromImage_1(WrenVM* vm){
     return;
   }
   error = sst_image_decode((unsigned char*)png, png_size, (unsigned char**)&pixels, &w, &h);
-  free((void*)png);
+
   if(error != sst_NoError){
     wrenError(vm, sst_error_get());
     sst_error_clear();

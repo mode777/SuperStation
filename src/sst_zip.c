@@ -30,7 +30,7 @@ bool sst_zip_isArchive(const char* zipPath){
   return true;
 }
 
-sst_ErrorCode sst_zip_readfile(const char* zipPath, const char* path, const char** out_str, size_t* out_size){
+sst_ErrorCode sst_zip_readfile(const char* zipPath, const char* path, unsigned char** out_str, size_t* out_size){
   #ifdef EMSCRIPTEN
   do_fetch(zipPath);
   #endif 
@@ -60,5 +60,5 @@ sst_ErrorCode sst_zip_readfile(const char* zipPath, const char* path, const char
   buf = realloc(buf, bufsize+1);
   ((char*)buf)[bufsize] = 0;
 
-  SST_RETURN(*out_str = (const char*)buf;if(out_size!=NULL){*out_size = bufsize;});
+  SST_RETURN(*out_str = (unsigned char*)buf;if(out_size!=NULL){*out_size = bufsize;});
 }

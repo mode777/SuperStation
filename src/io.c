@@ -1,7 +1,6 @@
 #include <stdarg.h>
 #include <limits.h>
-
-#include <SDL.h>
+#include <stdio.h>
 
 #include "string.h"
 #include "io.h"
@@ -22,13 +21,31 @@ EM_JS(void, do_fetch, (const char* path), {
 
 #endif
 
-sst_ErrorCode sst_io_readfile(const char* path, const char** out_str, size_t* out_size) {
+static char* read_file_string(const char *filename, size_t* size)
+{
+  FILE* file = fopen(filename, "rb");
+  if(file == NULL){
+    return NULL;
+  }
+  long old = ftell(file);
+  long numbytes;
+  fseek(file, 0L, SEEK_END);
+  numbytes = ftell(file);
+  fseek(file, old, SEEK_SET);
+  char* buffer = (char*)calloc(sizeof(char), numbytes+1);	
+  size_t read = fread(buffer, sizeof(char), numbytes, file);
+  fclose(file);
+  *size = (size_t)numbytes+1;
+  return buffer;
+}
+
+sst_ErrorCode sst_io_readfile(const char* path, unsigned char** out_str, size_t* out_size) {
   #ifdef EMSCRIPTEN
   do_fetch(path);
   #endif  
   
   size_t size;
-  const char* data = (const char*)SDL_LoadFile(path, &size);
+  unsigned char* data = (unsigned char*)read_file_string(path, &size);
   if(data == NULL){
     //SDL_GetErrorMsg()
     sst_error_add("File not found:");
