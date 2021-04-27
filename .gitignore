@@ -6,3 +6,4 @@ build-wasm/
 /*.js
 /*.wasm
 /.vscode
+yul.java

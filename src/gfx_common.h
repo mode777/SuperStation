@@ -8,8 +8,8 @@
 #define SST_FB_WIDTH 320
 #define SST_FB_HEIGHT 240
 
-#define SST_WIN_WIDTH 1280
-#define SST_WIN_HEIGHT 920
+#define SST_WIN_WIDTH 640
+#define SST_WIN_HEIGHT 480
 
 typedef struct {
   GLubyte r;

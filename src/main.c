@@ -44,6 +44,8 @@ static void load_game(const char* str){
   SST_CALL_TERM(sst_layers_reset(&State.gfx.layers));
   SST_CALL_TERM(sst_wren_dispose_vm(State.vm));
   SST_CALL_TERM(sst_wren_new_vm(&State, &State.vm));
+  
+  sst_input_init(&State.input);
 }
 
 static void update(){
@@ -59,7 +61,7 @@ static void update(){
           break;
       }
     }
-
+    sst_input_update(&State.input);
     SST_CALL_TERM(sst_gfx_update(&State.gfx));
     SST_CALL_TERM(sst_gfx_draw(&State.gfx));
     bool running;

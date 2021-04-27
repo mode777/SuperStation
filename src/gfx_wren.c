@@ -144,10 +144,39 @@ static void pixeldata_set_3(WrenVM* vm){
   unsigned int x = wrenGetSlotDouble(vm, 1);
   unsigned int y = wrenGetSlotDouble(vm, 2);
   unsigned int pixel = wrenGetSlotDouble(vm, 3);
-  if(x >= w || y >= h){
+  pixels[(y%h)*w+(x%w)] = pixel;
+}
+
+static void pixeldata_rect_5(WrenVM* vm){
+  unsigned int* data = wrenGetSlotForeign(vm, 0);
+  unsigned int w = data[0];
+  unsigned int h = data[1];
+  unsigned int* pixels = &data[2];
+  unsigned int x = wrenGetSlotDouble(vm, 1);
+  unsigned int y = wrenGetSlotDouble(vm, 2);
+  unsigned int rw = wrenGetSlotDouble(vm, 3);
+  unsigned int rh = wrenGetSlotDouble(vm, 4);
+  unsigned int color = wrenGetSlotDouble(vm, 5);
+  if(x+rw > w || y+rh > h){
     wrenError(vm, "Pixel out of range");
   }
-  pixels[y*w+x] = pixel;
+  for (size_t cy = y; cy < y+rh; cy++)
+  {
+    for (size_t cx = x; cx < x+rw; cx++)
+    {
+      pixels[cy*w+cx] = color;
+    }
+  }  
+}
+
+static void pixeldata_get_2(WrenVM* vm){
+  unsigned int* data = wrenGetSlotForeign(vm, 0);
+  unsigned int w = data[0];
+  unsigned int h = data[1];
+  unsigned int* pixels = &data[2];
+  unsigned int x = wrenGetSlotDouble(vm, 1);
+  unsigned int y = wrenGetSlotDouble(vm, 2);
+  wrenSetSlotDouble(vm, 0, pixels[(y%h)*w+(x%w)]);
 }
 
 static void pixeldata_width(WrenVM* vm){
@@ -208,6 +237,8 @@ sst_ErrorCode sst_gfx_wren_register(WrenVM* vm){
   sst_wren_register_method(vm, "gfx.PixelData.new(_,_)", pixeldata_create_2);
   sst_wren_register_method(vm, "gfx.PixelData.load(_)", pixeldata_fromImage_1);
   sst_wren_register_method(vm, "gfx.PixelData.set(_,_,_)", pixeldata_set_3);
+  sst_wren_register_method(vm, "gfx.PixelData.rect(_,_,_,_,_)", pixeldata_rect_5);
+  sst_wren_register_method(vm, "gfx.PixelData.get(_,_)", pixeldata_get_2);
   sst_wren_register_method(vm, "gfx.PixelData.width", pixeldata_width);
   sst_wren_register_method(vm, "gfx.PixelData.height", pixeldata_height);
   sst_wren_register_method(vm, "gfx.Layer.transform(_,_,_,_,_,_)", layer_transform_6);

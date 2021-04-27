@@ -7,12 +7,11 @@
 #include <wren.h>
 
 #include "gfx.h"
-
-static char* SST_PREFIX_SRC = "/src/";
-static char* SST_PREFIX_IMG = "/img/";
+#include "input.h"
 
 typedef struct {
   sst_Gfx gfx;
+  sst_InputState input;
   bool isZip;
   const char* root;
   WrenVM* vm;

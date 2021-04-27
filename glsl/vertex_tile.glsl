@@ -40,7 +40,7 @@ void main(void) {
     //mat3 transformation = mat3(m0, m1, 0.0, m3, m4, 0.0, translation.x, translation.y, 1.0);
     
     mat3 origin = mat3(1.0, 0.0, 0.0, 0.0, 1.0, 0.0, -t.x, -t.y, 1.0);
-    mat3 translation = mat3(1.0, 0.0, 0.0, 0.0, 1.0, 0.0, scroll.x+t.x, scroll.y+t.y, 1.0);
+    mat3 translation = mat3(1.0, 0.0, 0.0, 0.0, 1.0, 0.0, scroll.x, scroll.y, 1.0);
     mat3 scale = mat3(sx, 0.0, 0.0, 0.0, sy, 0.0, 0.0, 0.0, 1.0);
     mat3 rotation = mat3(c,s,0,-s,c,0,0,0,1.0);
     

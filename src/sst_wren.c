@@ -14,6 +14,7 @@
 #include "sst_wren.h"
 #include "gfx_wren.h"
 #include "json_wren.h"
+#include "input_wren.h"
 
 typedef struct {
   char * key;
@@ -43,10 +44,11 @@ typedef struct {
   WrenInterpretResult result;
 } sst_WrenInternalModule;
 
-static sst_WrenInternalModule InternalModules[3] = {
+static sst_WrenInternalModule InternalModules[] = {
   { .name = "__host__", .source = NULL, .filename = "wren/bootstrap.wren" },
   { .name = "gfx", .source = NULL, .filename = "wren/gfx.wren" },
-  { .name = "json", .source = NULL, .filename = "wren/json.wren" }
+  { .name = "json", .source = NULL, .filename = "wren/json.wren" },
+  { .name = "input", .source = NULL, .filename = "wren/input.wren" }
 };
 
 sst_ErrorCode sst_wren_load_resource(WrenVM* vm, const char* path, unsigned char** out_data, size_t* out_size){
@@ -175,7 +177,8 @@ sst_ErrorCode sst_wren_dispose_vm(WrenVM* vm){
 
 
 static sst_ErrorCode load_internal_modules(WrenVM* vm){
-  for (size_t i = 0; i < 3; i++)
+  size_t length = sizeof(InternalModules)/sizeof(sst_WrenInternalModule);
+  for (size_t i = 0; i < length; i++)
   {
     if(InternalModules[i].source == NULL) {
       SST_TRY_CALL(sst_io_readfile(InternalModules[i].filename, (unsigned char**)&InternalModules[i].source, NULL));
@@ -209,6 +212,7 @@ sst_ErrorCode sst_wren_new_vm(sst_State* state, WrenVM** out_vm){
 
   sst_gfx_wren_register(vm);
   sst_json_wren_register(vm);
+  sst_input_wren_register(vm);
 
   SST_TRY_CALL(load_internal_modules(vm));
 
