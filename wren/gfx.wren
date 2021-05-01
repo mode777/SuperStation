@@ -17,8 +17,8 @@ class Layer {
   static transform(i, x, y) { Layer.transform(i, x, y, 0, 1, 1) }
   static transform(i, x, y, r) { Layer.transform(i, x, y, r, 1, 1) }
   foreign static transform(i, x, y, r, sx, sy)
-  foreign static set(i, x, y, w, h, tilesX, tilesY, tileW, tileH)
-  static set(i, x, y, w, h) { Layer.set(i, x, y, w, h, 0, 0, 16, 16) }
+  foreign static set(i, x, y, w, h)
+  foreign static tileset(i, x, y, tw, th)
 }
 
 class VRAM {

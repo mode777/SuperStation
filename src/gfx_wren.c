@@ -204,16 +204,27 @@ static void layer_transform_6(WrenVM* vm){
   sst_quad_set_scale(q, sx, sy);
 }
 
-static void layer_set_9(WrenVM* vm){
+static void layer_tileset_5(WrenVM* vm){
+  int id = wrenGetSlotDouble(vm, 1);
+  int tox = wrenGetSlotDouble(vm, 2);
+  int toy = wrenGetSlotDouble(vm, 3);
+  int tw = wrenGetSlotDouble(vm, 4);
+  int th = wrenGetSlotDouble(vm, 5);
+
+  sst_LayerAttribs* q = &sst_wren_get_state(vm)->gfx.layers.attributes[id];
+
+  q->tileOffsetX = tox;
+  q->tileOffsetY = toy;
+  q->tileW = tw;
+  q->tileH = th;
+}
+
+static void layer_set_5(WrenVM* vm){
   int id = wrenGetSlotDouble(vm, 1);
   int ox = wrenGetSlotDouble(vm, 2);
   int oy = wrenGetSlotDouble(vm, 3);
   int w = wrenGetSlotDouble(vm, 4);
   int h = wrenGetSlotDouble(vm, 5);
-  int tox = wrenGetSlotDouble(vm, 6);
-  int toy = wrenGetSlotDouble(vm, 7);
-  int tw = wrenGetSlotDouble(vm, 8);
-  int th = wrenGetSlotDouble(vm, 9);
 
   sst_LayerAttribs* q = &sst_wren_get_state(vm)->gfx.layers.attributes[id];
 
@@ -221,10 +232,6 @@ static void layer_set_9(WrenVM* vm){
   q->offsetY = oy;
   q->width = w;
   q->height = h;
-  q->tileOffsetX = tox;
-  q->tileOffsetY = toy;
-  q->tileW = tw;
-  q->tileH = th;
   q->enabled = true;
 }
 
@@ -242,6 +249,7 @@ sst_ErrorCode sst_gfx_wren_register(WrenVM* vm){
   sst_wren_register_method(vm, "gfx.PixelData.width", pixeldata_width);
   sst_wren_register_method(vm, "gfx.PixelData.height", pixeldata_height);
   sst_wren_register_method(vm, "gfx.Layer.transform(_,_,_,_,_,_)", layer_transform_6);
-  sst_wren_register_method(vm, "gfx.Layer.set(_,_,_,_,_,_,_,_,_)", layer_set_9);
+  sst_wren_register_method(vm, "gfx.Layer.set(_,_,_,_,_)", layer_set_5);
+  sst_wren_register_method(vm, "gfx.Layer.tileset(_,_,_,_,_)", layer_tileset_5);
   return sst_NoError;
 }

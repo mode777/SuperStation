@@ -15,6 +15,7 @@
 #include "quad.h"
 #include "sst_wren.h"
 #include "sst_zip.h"
+#include "system.h"
 
 #ifdef EMSCRIPTEN
 #include <emscripten/emscripten.h>
@@ -26,28 +27,6 @@ static SDL_Event event;
 static SDL_Window* window;
 static bool quit;
 
-static void load_game(const char* str){
-  if(sst_zip_isArchive(str)){
-    State.root = str;
-    State.isZip = true;
-  } else {
-    int len = strlen(str);
-    if(str[len-1] != '/' && str[len-1] != '\\'){
-      State.root = sst_io_joinPath(2, str, "/");
-    } else {
-      State.root = str;
-    }
-    State.isZip = false;
-  }
-  // TODO: Reset VRAM
-  SST_CALL_TERM(sst_sprites_reset(&State.gfx.sprites));
-  SST_CALL_TERM(sst_layers_reset(&State.gfx.layers));
-  SST_CALL_TERM(sst_wren_dispose_vm(State.vm));
-  SST_CALL_TERM(sst_wren_new_vm(&State, &State.vm));
-  
-  sst_input_init(&State.input);
-}
-
 static void update(){
     while(SDL_PollEvent(&event)){
       switch (event.type)
@@ -56,7 +35,7 @@ static void update(){
           quit = true;
           break;
         case SDL_DROPFILE:
-          load_game(event.drop.file);      
+          SST_CALL_TERM(sst_system_loadGame(&State, event.drop.file));      
         default:
           break;
       }
@@ -103,7 +82,7 @@ int main(int argc, char *argv[]) {
   SST_CALL_TERM(sst_gfx_init(&State.gfx));
 
   if(argc > 1){    
-    load_game(argv[1]);
+    SST_CALL_TERM(sst_system_loadGame(&State, argv[1]));
   }
 
 #ifdef EMSCRIPTEN

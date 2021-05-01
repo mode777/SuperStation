@@ -10,6 +10,9 @@
 sst_ErrorCode sst_layers_reset(sst_Layers* layers){
   
   sst_LayerAttribs defaultAttribs = {0};
+  defaultAttribs.tileW = 16;
+  defaultAttribs.tileH = 16;
+
   // Init vertex attributes
   for (size_t i = 0; i < SST_MAX_LAYERS; i++)
   {

@@ -73,8 +73,10 @@ Install emscripten according to instructions
 mkdir build-wasm
 cd build-wasm
 source emsdk_env.sh
-emconfigure cmake ..
-emmake make
+emcmake cmake ..
+emmake make superstation
 ```
 
 WebAssembly builds call some methods in `superstation.html` to load files asynchronously. Make sure to serve superstation.html from a fileserver.
+
+Make sure to build in Release mode for better Wren performance.

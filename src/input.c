@@ -26,7 +26,7 @@ void sst_input_init(sst_InputState* state){
     }
 
     state->delay = 16;
-    state->repeat = 4;
+    state->repeat = 3;
 }
 
 void sst_input_update(sst_InputState* state){

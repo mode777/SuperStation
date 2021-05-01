@@ -7,7 +7,7 @@
 #include "sst_wren.h"
 #include "error.h"
 #include "gl.h"
-
+#include "system.h"
 
 sst_State* web_state;
 
@@ -34,6 +34,13 @@ void* sst_web_vram_read_pixel(int x, int y, int w, int h){
 void sst_web_vm_interpret(const char* str){
   sst_ErrorCode error = sst_wren_repl(web_state->vm, str);
   
+  if(error != sst_NoError){
+    puts(sst_error_get());
+  }
+}
+
+void sst_web_system_loadGame(const char* str){
+  sst_ErrorCode error = sst_system_loadGame(web_state, str);
   if(error != sst_NoError){
     puts(sst_error_get());
   }

@@ -8,7 +8,7 @@
 #ifdef EMSCRIPTEN
 #include <emscripten/emscripten.h>
 
-EM_JS(void, do_fetch, (const char* path), {
+EM_JS(void, do_fetch_zip, (const char* path), {
   Asyncify.handleSleep(wakeUp => {
     var pathStr = UTF8ToString(path);
     sst.fetch(pathStr, function(){
@@ -21,7 +21,7 @@ EM_JS(void, do_fetch, (const char* path), {
 
 bool sst_zip_isArchive(const char* zipPath){
   #ifdef EMSCRIPTEN
-  do_fetch(zipPath);
+  do_fetch_zip(zipPath);
   #endif 
 
   struct zip_t *zip = zip_open(zipPath, 0, 'r');
@@ -32,7 +32,7 @@ bool sst_zip_isArchive(const char* zipPath){
 
 sst_ErrorCode sst_zip_readfile(const char* zipPath, const char* path, unsigned char** out_str, size_t* out_size){
   #ifdef EMSCRIPTEN
-  do_fetch(zipPath);
+  do_fetch_zip(zipPath);
   #endif 
   
   void *buf = NULL;

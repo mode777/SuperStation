@@ -33,6 +33,9 @@ for(i in 0...Colors.count){
 // https://fabiensanglard.net/doom_fire_psx/
 class DoomFire {
 
+    w { _w }
+    h { _h }
+
     construct new(w, h){
         _w = w
         _h = h
@@ -41,11 +44,11 @@ class DoomFire {
         //Sprite.set(0,0,0,_w,_h)
         //Sprite.transform(0,0,0,0,320/_w,240/_h)
 
-        var ld = PixelData.new(1,1)
+        var ld = PixelData.new(1,2)
         ld.tile(0,0,0,0)
         ld.vram(_w,0)
-        Layer.set(0, _w, 0, ld.width, ld.height, 0, 0, _w, _h)
-        Layer.transform(0,0,0,0,1,240/_h)
+        Layer.set(0, _w, 0, ld.width, ld.height)
+        Layer.tileset(0, 0, 0, _w, _h)
 
         _pd = PixelData.new(_w, _h)
         _pd.rect(0,0,_w,_h,Colors[0])
@@ -70,12 +73,12 @@ class DoomFire {
         }
     }
     
-    doFire() {
-        var half = (_w/2).floor 
-        for(z in 0...4){
-            for(x in 0..._w/4){
+    doFire() { 
+        var rate = 4
+        for(z in 0...rate){
+            for(x in 0..._w/rate){
                 for(y in 1..._h){
-                    spreadFire((x*4)+z,y)
+                    spreadFire((x*rate)+z,y)
                 }
             }
             _pd.vram(0,0)
@@ -90,7 +93,7 @@ var x = 0
 
 while(true){
     fire.doFire()
-    Layer.transform(0,x,0)
+    Layer.transform(0,x,240-fire.h)
     x = x - 1
 }
 

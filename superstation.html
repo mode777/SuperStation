@@ -33,32 +33,70 @@
     <script type='text/javascript'>
       window.sst = {
         isPaused: false,
-        fetch: function(path, cb){
-          console.log("Download: "+path)
-          var frags = path.split("/");
-          var cPath = "";
-          for (var i = 0; i < frags.length-1; i++)
-          {
-            var sep = i === 0 ? "" : "/";
-            cPath = cPath + sep + frags[i];
-            try { 
-              FS.mkdir(cPath); 
-              console.log("Wrote path "+ cPath)
-            } catch(e) {}
-          }    
-          fetch(path).then(response => {
-            if(response.status !== 200){
-              cb()
-            } else {
-              response.arrayBuffer().then(buffer => {              
-                FS.writeFile(path, new Uint8Array(buffer));
-                console.log("Wrote file: " + path);
-                cb()
-              })
+        // fetch: function(path, cb){
+        //   if(path.split(".").length < 2){
+        //     console.warn("Files without extensions are not allowed in WASM mode: " + path);
+        //     cb();
+        //     return;
+        //   }
+        //   console.log("Download: "+path)
+        //   var frags = path.split("/");
+        //   var cPath = "";
+        //   for (var i = 0; i < frags.length-1; i++)
+        //   {
+        //     var sep = i === 0 ? "" : "/";
+        //     cPath = cPath + sep + frags[i];
+        //     try { 
+        //       console.log("Writing path "+ cPath)
+        //       FS.mkdir(cPath); 
+        //     } catch(e) {}
+        //   }    
+        //   fetch(path).then(response => {
+        //     if(response.status !== 200){
+        //       cb()
+        //     } else {
+        //       response.arrayBuffer().then(buffer => {              
+        //         FS.writeFile(path, new Uint8Array(buffer));
+        //         console.log("Wrote file: " + path);
+        //         cb()
+        //       })
+        //     }
+        //   });
+        // }
+        fetch: async function(path, cb){
+          try {
+            console.log("[START] " + path)
+            if(path.split(".").length < 2){
+              console.warn("Files without extensions are not allowed in WASM mode: " + path);
+              return;
             }
-          });
+            var frags = path.split("/");
+            var cPath = "";
+            for (var i = 0; i < frags.length-1; i++)
+            {
+              var sep = i === 0 ? "" : "/";
+              cPath = cPath + sep + frags[i];
+              try { 
+                FS.mkdir(cPath); 
+              } catch(e) {}
+            }  
+            const response = await fetch(path);
+            if(response.status !== 200){                
+                return;
+            } else {
+              const buffer = await response.arrayBuffer();
+              FS.writeFile(path, new Uint8Array(buffer));
+              return;
+            }
+          } catch(e){
+            console.error("ERROR", e);
+          } finally {
+            console.log("[END]" + path);
+            cb();
+          }
         }
       };
+      
       var statusElement = document.getElementById('status');
       var progressElement = document.getElementById('progress');
       var spinnerElement = document.getElementById('spinner');
@@ -88,7 +126,7 @@
             });
           }
         ],
-        arguments: ['example/layers'],
+        arguments: [],
         print: (function() {
           var element = document.getElementById('output');
           if (element) element.value = ''; // clear browser cache
@@ -162,6 +200,7 @@
             return imageData;
           }
           window.sst.interpret = Module.cwrap('sst_web_vm_interpret', null, ['string'])
+          window.sst.run = Module.cwrap('sst_web_system_loadGame', null, ['string'])
         }
       };
       Module.setStatus('Downloading...');

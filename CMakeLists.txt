@@ -94,7 +94,7 @@ if(EMSCRIPTEN)
   # set(CMAKE_EXECUTABLE_SUFFIX ".html")
   target_compile_options(superstation PRIVATE "-O3")
   #target_link_libraries(superstation PRIVATE "-s ASYNCIFY -O3 -lidbfs.js -s EXPORTED_FUNCTIONS='[\"_sst_web_vm_interpret\",\"_sst_web_vm_set_paused\",\"_sst_web_vram_read_pixel\",\"_main\"]' -s EXPORTED_RUNTIME_METHODS='[\"ccall\",\"cwrap\"]' --preload-file ../glsl --preload-file ../example --preload-file ../wren")
-  target_link_libraries(superstation PRIVATE "-s ASYNCIFY -s 'ASYNCIFY_IMPORTS=[\"do_fetch\"]' -O3 -lidbfs.js -s EXPORTED_FUNCTIONS='[\"_sst_web_vm_interpret\",\"_sst_web_vm_set_paused\",\"_sst_web_vram_read_pixel\",\"_main\"]' -s EXPORTED_RUNTIME_METHODS='[\"ccall\",\"cwrap\"]'")
+  target_link_libraries(superstation PRIVATE "-s ASYNCIFY -s 'ASYNCIFY_IMPORTS=[\"do_fetch\",\"do_fetch_zip\"]' -O3 -lidbfs.js -s EXPORTED_FUNCTIONS='[\"_sst_web_vm_interpret\",\"_sst_web_vm_set_paused\",\"_sst_web_vram_read_pixel\",\"_sst_web_system_loadGame\",\"_main\"]' -s EXPORTED_RUNTIME_METHODS='[\"ccall\",\"cwrap\"]'")
 endif()
 
 # Needed by SDL for console by mingw
