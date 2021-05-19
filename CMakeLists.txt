@@ -72,6 +72,7 @@ file(GLOB_RECURSE wren_headers thirdparty/wren/src/*.h)
 add_library(wren STATIC ${wren_sources} ${wren_headers})
 target_include_directories(wren PRIVATE thirdparty/wren/src/vm thirdparty/wren/src/optional)
 target_include_directories(wren PUBLIC thirdparty/wren/src/include)
+target_link_libraries(wren m)
 
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
   target_compile_definitions(wren PRIVATE DEBUG)
