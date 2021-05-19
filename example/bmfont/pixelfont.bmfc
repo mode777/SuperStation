@@ -1,0 +1,67 @@
+# AngelCode Bitmap Font Generator configuration file
+fileVersion=1
+
+# font settings
+fontName=Altima
+fontFile=../../../../../../../Users/z002f2au/Downloads/Altima/Altima.ttf
+charSet=0
+fontSize=-16
+aa=1
+scaleH=100
+useSmoothing=0
+isBold=0
+isItalic=0
+useUnicode=1
+disableBoxChars=1
+outputInvalidCharGlyph=0
+dontIncludeKerningPairs=0
+useHinting=1
+renderFromOutline=0
+useClearType=1
+autoFitNumPages=0
+autoFitFontSizeMin=0
+autoFitFontSizeMax=0
+
+# character alignment
+paddingDown=0
+paddingUp=0
+paddingRight=0
+paddingLeft=0
+spacingHoriz=0
+spacingVert=0
+useFixedHeight=0
+forceZero=0
+widthPaddingFactor=0.00
+
+# output file
+outWidth=256
+outHeight=256
+outBitDepth=32
+fontDescFormat=0
+fourChnlPacked=0
+textureFormat=png
+textureCompression=0
+alphaChnl=1
+redChnl=0
+greenChnl=0
+blueChnl=0
+invA=0
+invR=0
+invG=0
+invB=0
+
+# outline
+outlineThickness=1
+
+# selected chars
+chars=32-127,160-169,171-185,187,191-305,308-329,332-335,338-367,370-384,398,402,407,410,461-468,477,482
+chars=483,486-491,496,500-501,504-505,508-509,542-544,550-553,558-559,562-563,567,573,577-579,581,584
+chars=585,588-591,928,956,960,1024-1119,1124-1125,7682-7683,7690-7691,7710-7715,7718-7721,7728-7729,7742
+chars=7743-7745,7748-7749,7764-7769,7776-7777,7786-7787,7804-7805,7808-7815,7818-7825,7831-7833,7868-7869
+chars=7922-7923,7928-7929,8208-8231,8248-8251,8253-8254,8259-8260,8267,8270-8271,8275,8278,8282,8304,8308
+chars=8309-8313,8317-8340,8356,8364-8365,8453,8482,8544-8555,8592-8595,8606-8615,8630-8631,8634-8639,8656
+chars=8657-8659,8678-8681,8722-8729,8733-8734,8743-8747,8764-8766,8800-8802,8804-8807,8834-8835,8896-8899
+chars=8901,9632-9651,9654-9655,9658-9661,9664-9665,9668-9673,9675-9679,9698-9702,9707,9711,9723-9726,9733
+chars=9734,9765,9785-9787,9789-9790,9792,9794,9798,9800-9811,9825,9829,9833-9834,9885,9898-9899,9934
+
+# imported icon images

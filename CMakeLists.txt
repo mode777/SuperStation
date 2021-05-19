@@ -32,10 +32,6 @@ find_package(SDL2 REQUIRED)
 
 # Add GLES2
 if(WIN32)
-  
-endif()
-
-if(WIN32)
   if(TARGET_ARCH STREQUAL "x86_32")
     set(CMAKE_PREFIX_PATH ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/angle/win32/x86)
     set(EGL_LIBRARY ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/angle/win32/x86/bin/libEGL.dll.lib)
@@ -54,10 +50,12 @@ find_package(OpenGLES2 REQUIRED)
 # Add STB libs
 add_library(stb_image INTERFACE)
 add_library(stb_ds INTERFACE)
+add_library(stb_rect_pack INTERFACE)
 #add_library(stb_image_write INTERFACE)
 #add_library(stb_image_resize INTERFACE)
 target_include_directories(stb_image INTERFACE thirdparty/stb)
 target_include_directories(stb_ds INTERFACE thirdparty/stb)
+target_include_directories(stb_rect_pack INTERFACE thirdparty/stb)
 #target_include_directories(stb_image_write INTERFACE thirdparty/stb)
 #target_include_directories(stb_image_resize INTERFACE thirdparty/stb)
 
@@ -86,7 +84,7 @@ file(GLOB_RECURSE headers src/*.h)
 
 add_executable(superstation ${headers} ${sources})
 target_include_directories(superstation PRIVATE include)
-target_link_libraries(superstation PRIVATE EGL::EGL OpenGLES2::OpenGLES2 SDL2::Main stb_image wren jsmn zip)
+target_link_libraries(superstation PRIVATE EGL::EGL OpenGLES2::OpenGLES2 SDL2::Main stb_image stb_ds stb_rect_pack wren jsmn zip)
 
 # Add emscripten configuration
 if(EMSCRIPTEN)
@@ -108,6 +106,3 @@ if(WIN32)
   configure_file(${EGL_INCLUDE_DIR}/../bin/libEGL.dll ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/libEGL.dll COPYONLY)
   configure_file(${EGL_INCLUDE_DIR}/../bin/libGLESv2.dll ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/libGLESv2.dll COPYONLY)
 endif()
-
-
-#add_executable(test test.cc)

@@ -18,7 +18,7 @@ sst_ErrorCode sst_system_loadGame(sst_State* state, const char* str){
     }
     state->isZip = false;
   }
-  // TODO: Reset VRAM
+  SST_TRY_CALL(sst_vram_clear(&state->gfx.vram));
   SST_TRY_CALL(sst_sprites_reset(&state->gfx.sprites));
   SST_TRY_CALL(sst_layers_reset(&state->gfx.layers));
   SST_TRY_CALL(sst_wren_dispose_vm(state->vm));

@@ -15,6 +15,7 @@
 #include "gfx_wren.h"
 #include "json_wren.h"
 #include "input_wren.h"
+#include "io_wren.h"
 
 typedef struct {
   char * key;
@@ -48,7 +49,8 @@ static sst_WrenInternalModule InternalModules[] = {
   { .name = "__host__", .source = NULL, .filename = "wren/bootstrap.wren" },
   { .name = "gfx", .source = NULL, .filename = "wren/gfx.wren" },
   { .name = "json", .source = NULL, .filename = "wren/json.wren" },
-  { .name = "input", .source = NULL, .filename = "wren/input.wren" }
+  { .name = "input", .source = NULL, .filename = "wren/input.wren" },
+  { .name = "io", .source = NULL, .filename = "wren/io.wren" }
 };
 
 sst_ErrorCode sst_wren_load_resource(WrenVM* vm, const char* path, unsigned char** out_data, size_t* out_size){
@@ -155,18 +157,20 @@ static WrenLoadModuleResult load_module_fn(WrenVM* vm, const char* name){
 }
 
 sst_ErrorCode sst_wren_dispose_vm(WrenVM* vm){
-  if(vm == NULL) SST_RETURN();
+  if(vm == NULL) {
+    return sst_NoError;
+    //SST_RETURN();
+  }
 
   sst_WrenData* ud = wrenGetUserData(vm);
 
   wrenReleaseHandle(vm, ud->callHandle);
   wrenReleaseHandle(vm, ud->mainHandle);
-  wrenReleaseHandle(vm, ud->mainHandle);
   wrenReleaseHandle(vm, ud->replHandle);
   wrenReleaseHandle(vm, ud->updateHandle);
   
-  if(ud->foreignClasses != NULL) free((void*)ud->foreignClasses);
-  if(ud->foreignMethods != NULL) free((void*)ud->foreignMethods);
+  if(ud->foreignClasses != NULL) stbds_hmfree(ud->foreignClasses);
+  if(ud->foreignMethods != NULL) stbds_hmfree(ud->foreignMethods);
 
   free((void*)ud); 
   wrenFreeVM(vm);
@@ -213,6 +217,7 @@ sst_ErrorCode sst_wren_new_vm(sst_State* state, WrenVM** out_vm){
   sst_gfx_wren_register(vm);
   sst_json_wren_register(vm);
   sst_input_wren_register(vm);
+  sst_io_wren_register(vm);
 
   SST_TRY_CALL(load_internal_modules(vm));
 
