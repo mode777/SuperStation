@@ -35,7 +35,12 @@ static void update(){
           quit = true;
           break;
         case SDL_DROPFILE:
-          SST_CALL_TERM(sst_system_loadGame(&State, event.drop.file));      
+          SST_CALL_TERM(sst_system_loadGame(&State, event.drop.file));   
+          break;   
+        case SDL_KEYUP:
+          if(event.key.keysym.scancode == SDL_SCANCODE_F5 && State.root != NULL) {
+            SST_CALL_TERM(sst_system_loadGame(&State, State.root));
+          }
         default:
           break;
       }

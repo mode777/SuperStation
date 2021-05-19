@@ -39,6 +39,7 @@ foreign class PixelData {
   foreign set(x,y,color)
   foreign get(x,y)
   foreign rect(x,y,w,h,color)
+  foreign image(pixeldata,tx,ty,sx,sy,w,h)
   tile(x,y,tileX,tileY, flipX, flipY) { set(x,y,VISIBLE | (tileY << 8) | tileX | (flipX ? FLIPX : 0) | (flipY ? FLIPY : 0)) }
   tile(x,y,tileX,tileY) { set(x,y,VISIBLE | (tileY << 8) | tileX) }
 }
