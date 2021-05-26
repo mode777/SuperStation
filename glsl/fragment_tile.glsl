@@ -29,11 +29,10 @@ void main(void) {
 
   mediump vec4 tile = texture2D(texture, (floor(inp)+0.5) / texSize);
   tile *= 255.0;
-  mediump int flags1 = int(tile.z);
-  mediump int flags2 = int(tile.w);
-  mediump float drawFlag = mod(float(flags1/128), 2.0);
-  mediump float flipXFlag = mod(float(flags1/64), 2.0);
-  mediump float flipYFlag = mod(float(flags1/32), 2.0);
+  mediump float flag1 = floor(tile.z+0.1);
+  mediump float drawFlag = mod(flag1/128.0, 2.0);
+  mediump float flipXFlag = mod(flag1/64.0, 2.0);
+  mediump float flipYFlag = mod(flag1/32.0, 2.0);
    
   mediump vec2 oneTile = (texSize / tilesize);
 

@@ -35,7 +35,7 @@ class BMFont {
         _pages = []
         _chars = {}
 
-        for(line in File.load(name).split("\r\n").where{|x| x.count > 0}){
+        for(line in File.load(name).replace("\r", "").split("\n").where{|x| x.count > 0}){
             var bmc = BMFontClass.parse(line)
             if(bmc.type == "info") {
             } else if(bmc.type == "common") {

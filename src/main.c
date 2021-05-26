@@ -68,10 +68,10 @@ static void update(){
 
     SDL_GL_SwapWindow(window);
 
-    if(glGetError() != GL_NO_ERROR){
-      sst_error_add("OpengGL reported an error");
-      SST_TERM();
-    }
+    // if(glGetError() != GL_NO_ERROR){
+    //   sst_error_add("OpengGL reported an error");
+    //   SST_TERM();
+    // }
 }
 
 int main(int argc, char *argv[]) {

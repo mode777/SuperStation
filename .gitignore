@@ -7,3 +7,4 @@ build-wasm/
 /*.wasm
 /.vscode
 yul.java
+/superstation
