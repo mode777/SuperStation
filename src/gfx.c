@@ -32,7 +32,7 @@ sst_ErrorCode sst_gfx_update(sst_Gfx* state){
   return sst_NoError;
 }
 
-sst_ErrorCode sst_gfx_draw(sst_Gfx* state){
+sst_ErrorCode sst_gfx_draw(sst_Gfx* state, unsigned int w, unsigned int h){
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   glBindFramebuffer(GL_FRAMEBUFFER, state->framebuffer.framebuffer);
 
@@ -78,7 +78,7 @@ sst_ErrorCode sst_gfx_draw(sst_Gfx* state){
   }
   
 
-  SST_TRY_CALL(sst_framebuffer_draw(&state->framebuffer));
+  SST_TRY_CALL(sst_framebuffer_draw(&state->framebuffer, w, h));
   return sst_NoError;
 }
 

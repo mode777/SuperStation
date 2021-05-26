@@ -11,6 +11,16 @@
 #define SST_WIN_WIDTH 640
 #define SST_WIN_HEIGHT 480
 
+#define SST_MAX(a,b) \
+   ({ __typeof__ (a) _a = (a); \
+       __typeof__ (b) _b = (b); \
+     _a > _b ? _a : _b; })
+
+#define SST_MIN(a,b) \
+  ({ __typeof__ (a) _a = (a); \
+      __typeof__ (b) _b = (b); \
+    _a > _b ? _b : _a; })
+
 typedef struct {
   GLubyte r;
   GLubyte g;
@@ -42,6 +52,7 @@ typedef struct {
   GLuint mapSize;
   GLuint mapOffset;
   GLuint tileOffset;
+  GLuint scale;
 } sst_UniformLocations;
 
 typedef struct {

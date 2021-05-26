@@ -23,6 +23,6 @@ typedef struct {
 
 sst_ErrorCode sst_gfx_init(sst_Gfx* state);
 sst_ErrorCode sst_gfx_update(sst_Gfx* state);
-sst_ErrorCode sst_gfx_draw(sst_Gfx* state);
+sst_ErrorCode sst_gfx_draw(sst_Gfx* state, unsigned int w, unsigned int h);
 
 #endif

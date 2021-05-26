@@ -40,6 +40,14 @@ static void update(){
         case SDL_KEYUP:
           if(event.key.keysym.scancode == SDL_SCANCODE_F5 && State.root != NULL) {
             SST_CALL_TERM(sst_system_loadGame(&State, State.root));
+          } else if(event.key.keysym.scancode == SDL_SCANCODE_1){
+            SDL_SetWindowSize(window, SST_FB_WIDTH, SST_FB_HEIGHT);
+          } else if(event.key.keysym.scancode == SDL_SCANCODE_2){
+            SDL_SetWindowSize(window, SST_FB_WIDTH*2, SST_FB_HEIGHT*2);
+          } else if(event.key.keysym.scancode == SDL_SCANCODE_3){
+            SDL_SetWindowSize(window, SST_FB_WIDTH*3, SST_FB_HEIGHT*3);
+          } else if(event.key.keysym.scancode == SDL_SCANCODE_4){
+            SDL_SetWindowSize(window, SST_FB_WIDTH*4, SST_FB_HEIGHT*4);
           }
         default:
           break;
@@ -47,7 +55,11 @@ static void update(){
     }
     sst_input_update(&State.input);
     SST_CALL_TERM(sst_gfx_update(&State.gfx));
-    SST_CALL_TERM(sst_gfx_draw(&State.gfx));
+
+    unsigned int w,h;
+    SDL_GetWindowSize(window, &w, &h);
+
+    SST_CALL_TERM(sst_gfx_draw(&State.gfx, w, h));
     bool running;
     if(State.vm != NULL){
       sst_ErrorCode error = sst_wren_update(State.vm, &running);
@@ -75,7 +87,7 @@ int main(int argc, char *argv[]) {
   SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
   //SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 1);
 
-  window = SDL_CreateWindow("SuperStation", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SST_WIN_WIDTH, SST_WIN_HEIGHT, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
+  window = SDL_CreateWindow("SuperStation", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SST_WIN_WIDTH, SST_WIN_HEIGHT, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
 
   assert(window != NULL);
 

@@ -14,8 +14,8 @@ sst_ErrorCode sst_framebuffer_init(sst_Framebuffer* fb){
   SST_TRY_CALL(sst_io_readfile("glsl/fragment_fbo.glsl", &fragment_fbo, NULL));
   SST_TRY_CALL(sst_gl_create_program((const char*)vertex_fbo, (const char*)fragment_fbo, &fb->program.program));
   fb->program.uniforms.texture = glGetUniformLocation(fb->program.program, "texture");
+  fb->program.uniforms.scale = glGetUniformLocation(fb->program.program, "scale");
   fb->program.attributes.coordUv = glGetAttribLocation(fb->program.program, "coordUv");  
-
 
   SST_TRY_CALL(sst_gl_create_framebuffer(SST_FB_WIDTH, SST_FB_HEIGHT, &fb->framebuffer, &fb->texture, &fb->texWidth, &fb->texHeight));
 
@@ -45,11 +45,17 @@ sst_ErrorCode sst_framebuffer_init(sst_Framebuffer* fb){
   return sst_NoError;
 }
 
-sst_ErrorCode sst_framebuffer_draw(sst_Framebuffer* fb){
+sst_ErrorCode sst_framebuffer_draw(sst_Framebuffer* fb, unsigned int w, unsigned int h){
   glBindFramebuffer(GL_FRAMEBUFFER, 0);
-  glViewport(0,0,SST_WIN_WIDTH, SST_WIN_HEIGHT);
+  glViewport(0,0,w,h);
+  glClearColor(0,0,0,1.0f);
   glClear(GL_COLOR_BUFFER_BIT);
   glUseProgram(fb->program.program);
+
+  int pixelscale = SST_MAX(w/SST_FB_WIDTH, h/SST_FB_HEIGHT);
+  float targetX = SST_FB_WIDTH * pixelscale, targetY = SST_FB_HEIGHT * pixelscale;
+
+  glUniform2f(fb->program.uniforms.scale, targetX / w, targetY / h);
   glBindBuffer(GL_ARRAY_BUFFER, fb->buffer);
   glVertexAttribPointer(fb->program.attributes.coordUv, 4, GL_FLOAT, false, 0, NULL);
   glEnableVertexAttribArray(fb->program.attributes.coordUv);

@@ -15,6 +15,6 @@ typedef struct {
 } sst_Framebuffer;
 
 sst_ErrorCode sst_framebuffer_init(sst_Framebuffer* fb);
-sst_ErrorCode sst_framebuffer_draw(sst_Framebuffer* fb);
+sst_ErrorCode sst_framebuffer_draw(sst_Framebuffer* fb, unsigned int w, unsigned int h);
 
 #endif
