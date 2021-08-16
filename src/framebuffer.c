@@ -7,12 +7,12 @@
 #include "error.h"
 #include "io.h"
 #include "gl.h"
+#include "resource.h"
 
 sst_ErrorCode sst_framebuffer_init(sst_Framebuffer* fb){
-  unsigned char *vertex_fbo, *fragment_fbo;
-  SST_TRY_CALL(sst_io_readfile("glsl/vertex_fbo.glsl", &vertex_fbo, NULL));
-  SST_TRY_CALL(sst_io_readfile("glsl/fragment_fbo.glsl", &fragment_fbo, NULL));
-  SST_TRY_CALL(sst_gl_create_program((const char*)vertex_fbo, (const char*)fragment_fbo, &fb->program.program));
+  const char* vertex_fbo = sst_resource_get(sst_Res_Prog_Fbo_Vertex);
+  const char* fragment_fbo = sst_resource_get(sst_Res_Prog_Fbo_Fragment);
+  SST_TRY_CALL(sst_gl_create_program(vertex_fbo, fragment_fbo, &fb->program.program));
   fb->program.uniforms.texture = glGetUniformLocation(fb->program.program, "texture");
   fb->program.uniforms.scale = glGetUniformLocation(fb->program.program, "scale");
   fb->program.attributes.coordUv = glGetAttribLocation(fb->program.program, "coordUv");  

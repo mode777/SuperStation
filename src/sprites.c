@@ -7,6 +7,7 @@
 #include "sprites.h"
 #include "io.h"
 #include "gl.h"
+#include "resource.h"
 
 sst_ErrorCode sst_sprites_reset(sst_Sprites* sprites){
 // Init vertex attributes
@@ -21,12 +22,9 @@ sst_ErrorCode sst_sprites_init(sst_Sprites* sprites){
   // Create shaders
   size_t str_size;
   sst_Program* p = &sprites->program;
-  unsigned char *vertex, *fragment;
-  SST_TRY_CALL(sst_io_readfile("glsl/vertex.glsl", &vertex, &str_size));
-  SST_TRY_CALL(sst_io_readfile("glsl/fragment.glsl", &fragment, &str_size));
-  SST_TRY_CALL(sst_gl_create_program((const char*)vertex, (const char*)fragment, &p->program));
-  free((void*)vertex);
-  free((void*)fragment);
+  const char* vertex = sst_resource_get(sst_Res_Prog_Sprite_Vertex);
+  const char* fragment = sst_resource_get(sst_Res_Prog_Sprite_Fragment);
+  SST_TRY_CALL(sst_gl_create_program(vertex, fragment, &p->program));
   
   p->attributes.coordUv = glGetAttribLocation(p->program, "coordUv");
   p->attributes.scale = glGetAttribLocation(p->program, "scale");

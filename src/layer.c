@@ -6,6 +6,7 @@
 #include "layer.h"
 #include "quad.h"
 #include "gl.h"
+#include "resource.h"
 
 sst_ErrorCode sst_layers_reset(sst_Layers* layers){
   
@@ -32,12 +33,9 @@ sst_ErrorCode sst_layers_init(sst_Layers* layers){
   // Create shaders
   size_t str_size;
   sst_Program* p = &layers->program;
-  unsigned char *vertex, *fragment;
-  SST_TRY_CALL(sst_io_readfile("glsl/vertex_tile.glsl", &vertex, &str_size));
-  SST_TRY_CALL(sst_io_readfile("glsl/fragment_tile.glsl", &fragment, &str_size));
-  SST_TRY_CALL(sst_gl_create_program((const char*)vertex, (const char*)fragment, &p->program));
-  free((void*)vertex);
-  free((void*)fragment);
+  const char* vertex = sst_resource_get(sst_Res_Prog_Tile_Vertex);
+  const char* fragment = sst_resource_get(sst_Res_Prog_Tile_Fragment);
+  SST_TRY_CALL(sst_gl_create_program(vertex, fragment, &p->program));
   
   p->attributes.coordUv = glGetAttribLocation(p->program, "coordUv");
   p->attributes.scale = glGetAttribLocation(p->program, "scale");

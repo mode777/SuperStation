@@ -62,3 +62,4 @@ sst_ErrorCode sst_zip_readfile(const char* zipPath, const char* path, unsigned c
 
   SST_RETURN(*out_str = (unsigned char*)buf;if(out_size!=NULL){*out_size = bufsize;});
 }
+

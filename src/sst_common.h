@@ -10,10 +10,15 @@
 #include "input.h"
 
 typedef struct {
-  sst_Gfx gfx;
-  sst_InputState input;
+  bool noGame;
   bool isZip;
   const char* root;
+} sst_GameInfo;
+
+typedef struct {
+  sst_Gfx gfx;
+  sst_InputState input;
+  sst_GameInfo game;
   WrenVM* vm;
 } sst_State;
 

@@ -16,6 +16,7 @@
 #include "sst_wren.h"
 #include "sst_zip.h"
 #include "system.h"
+#include "resource.h"
 
 #ifdef EMSCRIPTEN
 #include <emscripten/emscripten.h>
@@ -38,8 +39,8 @@ static void update(){
           SST_CALL_TERM(sst_system_loadGame(&State, event.drop.file));   
           break;   
         case SDL_KEYUP:
-          if(event.key.keysym.scancode == SDL_SCANCODE_F5 && State.root != NULL) {
-            SST_CALL_TERM(sst_system_loadGame(&State, State.root));
+          if(event.key.keysym.scancode == SDL_SCANCODE_F5 && State.game.root != NULL) {
+            SST_CALL_TERM(sst_system_loadGame(&State, State.game.root));
           } else if(event.key.keysym.scancode == SDL_SCANCODE_1){
             SDL_SetWindowSize(window, SST_FB_WIDTH, SST_FB_HEIGHT);
           } else if(event.key.keysym.scancode == SDL_SCANCODE_2){
@@ -76,6 +77,8 @@ static void update(){
 
 int main(int argc, char *argv[]) {
 
+  SST_CALL_TERM(sst_resource_init());
+
   SDL_Init(SDL_INIT_EVERYTHING);
 
   SDL_SetHint(SDL_HINT_OPENGL_ES_DRIVER, "1");
@@ -100,6 +103,8 @@ int main(int argc, char *argv[]) {
 
   if(argc > 1){    
     SST_CALL_TERM(sst_system_loadGame(&State, argv[1]));
+  } else {
+    SST_CALL_TERM(sst_system_loadGame(&State, NULL));
   }
 
 #ifdef EMSCRIPTEN

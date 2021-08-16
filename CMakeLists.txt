@@ -12,11 +12,6 @@ message("Building for ${TARGET_ARCH}")
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 
-include(cmake/bin2h.cmake)
-bin2h(SOURCE_FILE glsl/fragment.glsl HEADER_FILE include/fragment.in VARIABLE_NAME SHADER_FRAGMENT NULL_TERMINATE)
-bin2h(SOURCE_FILE glsl/vertex.glsl HEADER_FILE include/vertex.in VARIABLE_NAME SHADER_VERTEX NULL_TERMINATE)
-
-
 # Add SDL
 if(WIN32)
   if(TARGET_ARCH STREQUAL "x86_32")
@@ -75,17 +70,36 @@ target_link_libraries(wren m)
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
   target_compile_definitions(wren PRIVATE DEBUG)
 endif()
-
+  
 # Add zip
 add_subdirectory(thirdparty/zip)
 
-# The main program
+# Add Superstation executable
 file(GLOB_RECURSE sources src/*.c)
 file(GLOB_RECURSE headers src/*.h)
 
 add_executable(superstation ${headers} ${sources})
-target_include_directories(superstation PRIVATE include)
+
 target_link_libraries(superstation PRIVATE EGL::EGL OpenGLES2::OpenGLES2 SDL2::Main stb_image stb_ds stb_rect_pack wren jsmn zip)
+
+option(SST_INCLUDE_ASSETS "Include built-in scripts and shaders" OFF)
+if(SST_INCLUDE_ASSETS)
+  include(cmake/bin2h.cmake)
+  target_include_directories(superstation PRIVATE include)
+  target_compile_definitions(superstation PRIVATE SST_INCLUDE_ASSETS)
+  
+  bin2h(SOURCE_FILE glsl/fbo.fragment.glsl HEADER_FILE include/resources.in VARIABLE_NAME RES_PROG_FBO_FRAGMENT NULL_TERMINATE)
+  bin2h(SOURCE_FILE glsl/fbo.vertex.glsl HEADER_FILE include/resources.in APPEND VARIABLE_NAME RES_PROG_FBO_VERTEX NULL_TERMINATE)
+  bin2h(SOURCE_FILE glsl/tile.fragment.glsl HEADER_FILE include/resources.in APPEND VARIABLE_NAME RES_PROG_TILE_FRAGMENT NULL_TERMINATE)
+  bin2h(SOURCE_FILE glsl/tile.vertex.glsl HEADER_FILE include/resources.in APPEND VARIABLE_NAME RES_PROG_TILE_VERTEX NULL_TERMINATE)
+  bin2h(SOURCE_FILE glsl/sprite.fragment.glsl HEADER_FILE include/resources.in APPEND VARIABLE_NAME RES_PROG_SPRITE_FRAGMENT NULL_TERMINATE)
+  bin2h(SOURCE_FILE glsl/sprite.vertex.glsl HEADER_FILE include/resources.in APPEND VARIABLE_NAME RES_PROG_SPRITE_VERTEX NULL_TERMINATE)
+  bin2h(SOURCE_FILE wren/bootstrap.wren HEADER_FILE include/resources.in APPEND VARIABLE_NAME RES_SCRIPT_BOOTSTRAP NULL_TERMINATE)
+  bin2h(SOURCE_FILE wren/gfx.wren HEADER_FILE include/resources.in APPEND VARIABLE_NAME RES_SCRIPT_GFX NULL_TERMINATE)
+  bin2h(SOURCE_FILE wren/input.wren HEADER_FILE include/resources.in APPEND VARIABLE_NAME RES_SCRIPT_INPUT NULL_TERMINATE)
+  bin2h(SOURCE_FILE wren/io.wren HEADER_FILE include/resources.in APPEND VARIABLE_NAME RES_SCRIPT_IO NULL_TERMINATE)
+  bin2h(SOURCE_FILE wren/json.wren HEADER_FILE include/resources.in APPEND VARIABLE_NAME RES_SCRIPT_JSON NULL_TERMINATE)
+endif()
 
 # Add emscripten configuration
 if(EMSCRIPTEN)

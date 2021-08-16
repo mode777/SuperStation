@@ -16,6 +16,7 @@
 #include "json_wren.h"
 #include "input_wren.h"
 #include "io_wren.h"
+#include "resource.h"
 
 typedef struct {
   char * key;
@@ -41,26 +42,39 @@ typedef struct {
 typedef struct {
   const char* name;
   const char* source;
-  const char* filename;
   WrenInterpretResult result;
 } sst_WrenInternalModule;
 
 static sst_WrenInternalModule InternalModules[] = {
-  { .name = "__host__", .source = NULL, .filename = "wren/bootstrap.wren" },
-  { .name = "gfx", .source = NULL, .filename = "wren/gfx.wren" },
-  { .name = "json", .source = NULL, .filename = "wren/json.wren" },
-  { .name = "input", .source = NULL, .filename = "wren/input.wren" },
-  { .name = "io", .source = NULL, .filename = "wren/io.wren" }
+  { .name = "__host__",   .source = NULL },
+  { .name = "gfx",        .source = NULL },
+  { .name = "json",       .source = NULL },
+  { .name = "input",      .source = NULL },
+  { .name = "io",         .source = NULL }
 };
+
+bool startsWith(const char *pre, const char *str)
+{
+    size_t lenpre = strlen(pre),
+           lenstr = strlen(str);
+    return lenstr < lenpre ? false : memcmp(pre, str, lenpre) == 0;
+}
 
 sst_ErrorCode sst_wren_load_resource(WrenVM* vm, const char* path, unsigned char** out_data, size_t* out_size){
   sst_State* state = sst_wren_get_state(vm);
-
-  if(state->isZip){
-    printf("[DEBUG] Try load resource %s from %s\n", path, state->root);
-    SST_TRY_CALL(sst_zip_readfile(state->root, path, out_data, out_size));
+  if(startsWith("res://", path)){
+    sst_Resource resId = atoi(path + strlen("res://"));
+    const char* data = sst_resource_get(resId);
+    size_t len = strlen(data) + 1; 
+    *out_data = calloc(sizeof(char), len);
+    if(out_size != NULL) *out_size = len;
+    memcpy(*out_data, data, len);
+  }
+  else if(state->game.isZip){
+    printf("[DEBUG] Try load resource %s from %s\n", path, state->game.root);
+    SST_TRY_CALL(sst_zip_readfile(state->game.root, path, out_data, out_size));
   } else {
-    const char* localPath = sst_io_joinPath(2, state->root, path);
+    const char* localPath = sst_io_joinPath(2, state->game.root, path);
     printf("[DEBUG] Try load resource file %s\n", localPath);
     sst_ErrorCode error = sst_io_readfile(localPath, out_data, out_size);
     free((void*)localPath);
@@ -178,16 +192,16 @@ sst_ErrorCode sst_wren_dispose_vm(WrenVM* vm){
   SST_RETURN();
 }
 
-
-
 static sst_ErrorCode load_internal_modules(WrenVM* vm){
+  InternalModules[0].source = sst_resource_get(sst_Res_Script_Bootstrap);
+  InternalModules[1].source = sst_resource_get(sst_Res_Script_Gfx);
+  InternalModules[2].source = sst_resource_get(sst_Res_Script_Json);
+  InternalModules[3].source = sst_resource_get(sst_Res_Script_Input);
+  InternalModules[4].source = sst_resource_get(sst_Res_Script_Io);
+  
   size_t length = sizeof(InternalModules)/sizeof(sst_WrenInternalModule);
   for (size_t i = 0; i < length; i++)
-  {
-    if(InternalModules[i].source == NULL) {
-      SST_TRY_CALL(sst_io_readfile(InternalModules[i].filename, (unsigned char**)&InternalModules[i].source, NULL));
-    }
-    
+  {    
     WrenInterpretResult fiberResult = wrenInterpret(vm, InternalModules[i].name, InternalModules[i].source);
     if(fiberResult != WREN_RESULT_SUCCESS) { 
       SST_RETURN_ERROR("Script reported errors");

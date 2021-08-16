@@ -13,10 +13,6 @@
 #include "vram.h"
 #include "framebuffer.h"
 
-#include "fragment.in"
-#include "vertex.in"
-
-
 sst_ErrorCode sst_gfx_init(sst_Gfx* state){
   SST_TRY_CALL(sst_sprites_init(&state->sprites));
   SST_TRY_CALL(sst_layers_init(&state->layers));

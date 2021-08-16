@@ -114,7 +114,6 @@ static void pixeldata_fromImage_1(WrenVM* vm){
   const char* pixels;
   size_t png_size, w, h;
 
-  const char* imgRoot = state->root;
   sst_ErrorCode error = sst_wren_load_resource(vm, img, (unsigned char**)&png, &png_size);
   
   if(error != sst_NoError){
