@@ -87,6 +87,11 @@ if(SST_INCLUDE_ASSETS)
   include(cmake/bin2h.cmake)
   target_include_directories(superstation PRIVATE include)
   target_compile_definitions(superstation PRIVATE SST_INCLUDE_ASSETS)
+  # file(ARCHIVE_CREATE OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/resources.zip
+  #   PATHS ${CMAKE_CURRENT_SOURCE_DIR}/res
+  #   FORMAT zip
+  # )
+  # bin2h(SOURCE_FILE ${CMAKE_CURRENT_SOURCE_DIR}/resources.zip HEADER_FILE include/resources.in VARIABLE_NAME SST_RESOURCES_ZIP NULL_TERMINATE)
   
   bin2h(SOURCE_FILE glsl/fbo.fragment.glsl HEADER_FILE include/resources.in VARIABLE_NAME RES_PROG_FBO_FRAGMENT NULL_TERMINATE)
   bin2h(SOURCE_FILE glsl/fbo.vertex.glsl HEADER_FILE include/resources.in APPEND VARIABLE_NAME RES_PROG_FBO_VERTEX NULL_TERMINATE)
