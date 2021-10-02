@@ -7,7 +7,6 @@ target_architecture(TARGET_ARCH)
 
 message("Building for ${TARGET_ARCH}")
 
-
 #set(CMAKE_FIND_DEBUG_MODE true)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
@@ -37,6 +36,12 @@ if(WIN32)
     set(EGL_LIBRARY ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/angle/win32/x64/bin/libEGL.dll.lib)
     set(OPENGLES2_LIBRARY ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/angle/win32/x64/bin/libGLESv2.dll.lib)
   endif()
+endif()
+
+if(APPLE AND "${CMAKE_HOST_SYSTEM_PROCESSOR}" STREQUAL "arm64")
+  set(CMAKE_PREFIX_PATH ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/angle/mac_arm64)
+  set(EGL_LIBRARY ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/angle/mac_arm64/bin/libEGL.dylib)
+  set(OPENGLES2_LIBRARY ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/angle/mac_arm64/bin/libGLESv2.dylib)
 endif()
 
 find_package(EGL REQUIRED)

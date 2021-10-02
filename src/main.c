@@ -5,6 +5,7 @@
 
 #include <SDL.h>
 #include <GLES2/gl2.h>
+//#include <EGL/egl.h>
 #include <wren.h>
 
 #include "sst_common.h"
@@ -57,8 +58,8 @@ static void update(){
     sst_input_update(&State.input);
     SST_CALL_TERM(sst_gfx_update(&State.gfx));
 
-    unsigned int w,h;
-    SDL_GetWindowSize(window, &w, &h);
+    int w,h;
+    SDL_GL_GetDrawableSize(window, &w, &h);
 
     SST_CALL_TERM(sst_gfx_draw(&State.gfx, w, h));
     bool running;
@@ -90,15 +91,15 @@ int main(int argc, char *argv[]) {
   SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
   //SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 1);
 
-  window = SDL_CreateWindow("SuperStation", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SST_WIN_WIDTH, SST_WIN_HEIGHT, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+  window = SDL_CreateWindow("SuperStation", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SST_WIN_WIDTH, SST_WIN_HEIGHT, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI);
 
   assert(window != NULL);
 
   SDL_GLContext* context = SDL_GL_CreateContext(window);
+  SDL_GL_SetSwapInterval(0);
 
   assert(context != NULL);
 
-  SDL_GL_SetSwapInterval(1);
   SST_CALL_TERM(sst_gfx_init(&State.gfx));
 
   if(argc > 1){    
@@ -112,7 +113,10 @@ int main(int argc, char *argv[]) {
   emscripten_set_main_loop(update, 0, 1);
 #else
   while(!quit){
+    Uint32 t = SDL_GetTicks();
     update();
+    t = 17-(t-SDL_GetTicks());
+    if(t > 0) SDL_Delay(t);
   }
 #endif
 }

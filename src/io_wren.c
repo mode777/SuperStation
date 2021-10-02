@@ -12,7 +12,7 @@ static void io_file_read_1(WrenVM* vm){
         return;
     }
 
-    wrenSetSlotString(vm, 0, content);    
+    wrenSetSlotString(vm, 0, (const char *)content);    
     free(content);
 }
 

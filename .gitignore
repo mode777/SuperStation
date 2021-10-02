@@ -5,6 +5,7 @@ build-wasm/
 /*.exe
 /*.js
 /*.wasm
+/*.dylib
 /.vscode
-yul.java
+.DS_Store
 /superstation

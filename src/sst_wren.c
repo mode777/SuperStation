@@ -166,7 +166,7 @@ static WrenLoadModuleResult load_module_fn(WrenVM* vm, const char* name){
     sst_error_clear();
   }
 
-  result.source = content;
+  result.source = (const char*)content;
   return result;
 }
 

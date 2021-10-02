@@ -26,17 +26,17 @@ sst_ErrorCode sst_resource_init() {
 }
 #else
 sst_ErrorCode sst_resource_init() {
-  SST_TRY_CALL(sst_io_readfile("glsl/fbo.fragment.glsl", &resources[sst_Res_Prog_Fbo_Fragment], NULL));
-  SST_TRY_CALL(sst_io_readfile("glsl/fbo.vertex.glsl", &resources[sst_Res_Prog_Fbo_Vertex], NULL));
-  SST_TRY_CALL(sst_io_readfile("glsl/sprite.fragment.glsl", &resources[sst_Res_Prog_Sprite_Fragment], NULL));
-  SST_TRY_CALL(sst_io_readfile("glsl/sprite.vertex.glsl", &resources[sst_Res_Prog_Sprite_Vertex], NULL));
-  SST_TRY_CALL(sst_io_readfile("glsl/tile.fragment.glsl", &resources[sst_Res_Prog_Tile_Fragment], NULL));
-  SST_TRY_CALL(sst_io_readfile("glsl/tile.vertex.glsl", &resources[sst_Res_Prog_Tile_Vertex], NULL));
-  SST_TRY_CALL(sst_io_readfile("wren/bootstrap.wren", &resources[sst_Res_Script_Bootstrap], NULL));
-  SST_TRY_CALL(sst_io_readfile("wren/gfx.wren", &resources[sst_Res_Script_Gfx], NULL));
-  SST_TRY_CALL(sst_io_readfile("wren/input.wren", &resources[sst_Res_Script_Input], NULL));
-  SST_TRY_CALL(sst_io_readfile("wren/io.wren", &resources[sst_Res_Script_Io], NULL));
-  SST_TRY_CALL(sst_io_readfile("wren/json.wren", &resources[sst_Res_Script_Json], NULL));
+  SST_TRY_CALL(sst_io_readfile("res/glsl/fbo.fragment.glsl", (unsigned char **)&resources[sst_Res_Prog_Fbo_Fragment], NULL));
+  SST_TRY_CALL(sst_io_readfile("res/glsl/fbo.vertex.glsl", (unsigned char **)&resources[sst_Res_Prog_Fbo_Vertex], NULL));
+  SST_TRY_CALL(sst_io_readfile("res/glsl/sprite.fragment.glsl", (unsigned char **)&resources[sst_Res_Prog_Sprite_Fragment], NULL));
+  SST_TRY_CALL(sst_io_readfile("res/glsl/sprite.vertex.glsl", (unsigned char **)&resources[sst_Res_Prog_Sprite_Vertex], NULL));
+  SST_TRY_CALL(sst_io_readfile("res/glsl/tile.fragment.glsl", (unsigned char **)&resources[sst_Res_Prog_Tile_Fragment], NULL));
+  SST_TRY_CALL(sst_io_readfile("res/glsl/tile.vertex.glsl", (unsigned char **)&resources[sst_Res_Prog_Tile_Vertex], NULL));
+  SST_TRY_CALL(sst_io_readfile("res/wren/bootstrap.wren", (unsigned char **)&resources[sst_Res_Script_Bootstrap], NULL));
+  SST_TRY_CALL(sst_io_readfile("res/wren/gfx.wren", (unsigned char **)&resources[sst_Res_Script_Gfx], NULL));
+  SST_TRY_CALL(sst_io_readfile("res/wren/input.wren", (unsigned char **)&resources[sst_Res_Script_Input], NULL));
+  SST_TRY_CALL(sst_io_readfile("res/wren/io.wren", (unsigned char **)&resources[sst_Res_Script_Io], NULL));
+  SST_TRY_CALL(sst_io_readfile("res/wren/json.wren", (unsigned char **)&resources[sst_Res_Script_Json], NULL));
   SST_RETURN();
 }
 #endif
